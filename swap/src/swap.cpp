@@ -209,7 +209,7 @@ void swap::do_swap(const name owner, const extended_asset ext_quantity, const ve
         check(ext_in_sym == m_itr->token0 || ext_in_sym == m_itr->token1, "Invalid symbol");
         
         const extended_asset protocol_fee = { ext_in.quantity.amount * config.protocol_fee / 10000, ext_in.get_extended_symbol() };
-        uint64_t amount_in = ext_in.quantity.amount - protocol_fee.quantity.amount;
+        uint64_t amount_in = ext_in.quantity.amount;
         
         asset new_reserve0; 
         asset new_reserve1;
