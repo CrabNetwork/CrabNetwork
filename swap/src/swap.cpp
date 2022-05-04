@@ -209,7 +209,7 @@ void swap::do_swap(const name owner, const extended_asset ext_quantity, const ve
         check(ext_in_sym == m_itr->token0 || ext_in_sym == m_itr->token1, "Invalid symbol");
         
         const extended_asset protocol_fee = { ext_in.quantity.amount * config.protocol_fee / 10000, ext_in.get_extended_symbol() };
-        uint64_t amount_in = ext_in.quantity.amount;
+        uint64_t amount_in = ext_in.quantity.amount - protocol_fee.quantity.amount;
         
         asset new_reserve0; 
         asset new_reserve1;
@@ -252,7 +252,7 @@ int128_t swap::get_amount_out(int128_t amount_in, int128_t reserve_in, int128_t 
     auto config = _configs.get();
     check(amount_in > 0, "invalid input amount");
     check(reserve_in > 0 && reserve_out > 0, "insufficient liquidity");
-    uint64_t amount_in_with_fee = amount_in * (PRICE_BASE - config.trade_fee - config.protocol_fee);
+    uint64_t amount_in_with_fee = amount_in * (PRICE_BASE - config.trade_fee);
     uint64_t numerator = amount_in_with_fee * reserve_out;
     uint64_t denominator = reserve_in * 10000 + amount_in_with_fee;
     uint64_t amount_out = numerator / denominator;
